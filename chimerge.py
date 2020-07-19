@@ -42,7 +42,7 @@ def M_chiMerge(dfname, colname, target, method='MaxInt', maxint=5, minchi2=3.84,
             if dftab1.loc[i, 'badrate'] == 0 or dftab1.loc[i, 'badrate'] == 1:
                 dfres.loc[i, 'trans'] = dfres.loc[i - 1, 'trans']
         dftab1[colname] = dfres.trans
-        dftab1 = dftab1.groupby(colname, as_index=False, observed=True).agg('sum')
+        dftab1 = dftab1.groupby(colname, as_index=False).agg('sum')
         n_levels = dftab1[colname].nunique()
 
         if vartype == 'C':
@@ -61,7 +61,7 @@ def M_chiMerge(dfname, colname, target, method='MaxInt', maxint=5, minchi2=3.84,
                 break
 
         else:
-            if dftab1.loc[minindex, 'chi2'] > minchi2:
+            if dftab1.loc[minindex, 'chi2'] >= minchi2:
                 break
         newcat = dftab1.loc[minindex + 1, colname]
         dfres.loc[dfres['trans'] == mincat, 'trans'] = newcat
